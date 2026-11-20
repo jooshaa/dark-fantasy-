@@ -357,6 +357,20 @@ Limitations: remaining issues
 Next: immediate follow-up
 ```
 
+### 2026-11-20 — Rojo & Git team collaboration setup
+
+Scope: Repository root (`rokit.toml`, `default.project.json`, `README.md`, `AGENTS.md`, `.gitignore`) and `src/` Luau structure.
+
+Implementation: Initialized Rokit with `rojo 7.7.1`, created `default.project.json` mapping `src/server` (`ServerScriptService`), `src/client` (`StarterPlayer.StarterPlayerScripts`), and `src/shared` (`ReplicatedStorage.Shared`) with `"$ignoreUnknownInstances": true` so syncing preserves all Studio-authored map geometry, Terrain, Lighting, and archives. Exported active `ServerScriptService.WallGrassLODController` to `src/server/WallGrassLODController.server.luau` and added starter `src/shared/GameConfig.luau` and `src/client/ClientInit.client.luau`.
+
+Verification: Ran `rojo build default.project.json -o /tmp/dark-fantasy-test.rbxlx` and confirmed clean build with exit code 0.
+
+Performance: Not measured (no runtime scene changes).
+
+Limitations: Map geometry (`Workspace.PinkHouseMap`), Terrain, and Lighting remain hosted in the Roblox Cloud place (`placeId: 96826195026003`); collaborators need Team Create access (or a `.rbxl` snapshot) alongside `rojo serve` to run the full map.
+
+Next: Enable Team Create for collaborators if needed and continue vertical-slice development with all new Luau scripts authored in `src/`.
+
 ### 2026-11-19 — Initial Pink House greybox
 
 Scope: `Place1` / `Workspace.ReferenceMap` and Lighting effects.

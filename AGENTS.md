@@ -41,9 +41,17 @@ Commit and push changes with clear, descriptive commit messages.
 6. Capture or inspect the result after material visual changes.
 7. Profile before making performance claims.
 
-## Roblox Studio
+## Roblox Studio & Rojo
 
-- The active prototype is edited through the `Roblox_Studio` MCP server.
+- Luau game code lives in Git under `src/server/` (`ServerScriptService`),
+  `src/client/` (`StarterPlayer.StarterPlayerScripts`), and `src/shared/`
+  (`ReplicatedStorage.Shared`), synced via `default.project.json` (`Rojo 7.7.1`,
+  managed by `rokit.toml`). Keep `"$ignoreUnknownInstances": true` on mapped
+  services so Rojo never removes Studio-authored map/archive objects.
+- Keep Luau edits in `src/` committed to Git so all collaborators can run the
+  same code via `rojo serve`.
+- The active map and environment are edited through Roblox Studio (and
+  `Roblox_Studio` MCP).
 - Confirm the intended Studio instance before modifying a place.
 - As of 2026-11-20, the active cloud-persisted place is
   `dark fantasy` (`placeId: 96826195026003`, `universeId: 10777885251`). Always

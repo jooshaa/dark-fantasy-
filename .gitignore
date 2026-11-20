@@ -11,3 +11,9 @@
 # Python
 __pycache__/
 *.py[cod]
+
+# Roblox / Rojo local build outputs
+*.rbxl.lock
+*.rbxlx.lock
+build.rbxl
+build.rbxlx
