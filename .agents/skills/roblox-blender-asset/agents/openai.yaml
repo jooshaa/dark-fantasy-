@@ -1,0 +1,4 @@
+interface:
+  display_name: "Roblox Blender Asset"
+  short_description: "Build and validate Blender assets for this Roblox project"
+  default_prompt: "Create or improve a Blender asset for the Pink House Roblox map, validate scale, geometry, materials, and export, then update the graphics audit."
