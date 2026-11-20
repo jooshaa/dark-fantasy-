@@ -619,9 +619,10 @@ Outer sides and rear wall have not received the dense geometry pass pending
   active map and preserved under
   `ServerStorage.MapArchives.FailedWallGrass_2026_11_20`. Active cliff walls use
   a dark Slate fallback until the replacement production module is approved.
-- A working distance-streamed LOD0 grass corridor now covers both fissure walls
-  along the complete ladder trajectory. It contains 468 reusable sectors, but a
-  server controller shows only sectors within 135 studs of any player.
+- The rejected distance-streamed wall-grass corridor is no longer active. Its
+  468 sectors and controller are preserved only in
+  `ServerStorage.MapArchives.FailedWallGrass_2026_11_20`; real Terrain grass
+  remains enabled on the upper and lower horizontal meadows.
 
 Next: Profile the front and fissure gameplay path, then create a cheaper distant
 LOD panel before extending geometric coverage to outer and rear walls.
@@ -673,6 +674,33 @@ the plain dark-green cliff rather than a separate medium-detail foliage mesh.
 
 Next: Capture close gameplay views, tune the 135-stud radius, run desktop/mobile
 profiling, then extend the same sector system to other camera-visible walls.
+
+### 2026-11-20 — Rejected wall-grass streaming rollback
+
+Scope: `Workspace.PinkHouseMap.WallGrassStreamingSectors`,
+`ServerScriptService.WallGrassLODController`, and the Rojo server source.
+
+Implementation: Removed the complete 468-sector streaming mesh layer from the
+active map and moved it, together with its disabled controller, to
+`ServerStorage.MapArchives.FailedWallGrass_2026_11_20`. Deleted
+`src/server/WallGrassLODController.server.luau` so Rojo cannot restore the
+rejected system. Kept `Terrain.Decoration` enabled and did not alter the real
+upper/lower meadow grass, house, ladder, or clouds.
+
+Verification: Studio inspection reports no active `WallGrassStreamingSectors`
+folder and no active wall-grass controller; the rejected folder is present in
+the archive and Terrain decoration remains enabled. Captured post-rollback
+upper and side views showing clean cliff cores without the streamed plants.
+
+Performance: Removed 468 active MeshParts and the 0.25-second server distance
+update loop. Frame time and GPU cost were not re-measured.
+
+Limitations: Vertical cliff walls are intentionally plain while a better
+authored solution is designed; only horizontal Terrain surfaces currently have
+true grass decoration.
+
+Next: Fix the floating cottage placement, then design one optimized authored
+cliff-surface solution and approve it from a small visual test before scaling.
 
 ### 2026-11-20 — Near and lower vapor cloud layers
 
