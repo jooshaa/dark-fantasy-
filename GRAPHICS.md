@@ -1043,3 +1043,26 @@ for a separate approved prototype.
 
 Next: Manually test the ladder climb with a normal R15 character, then address
 only the cliff-wall vegetation after approving a small Blender proof.
+
+### 2026-11-21 — Level meadow seam over closed fissure
+
+Scope: Terrain Grass strip above `Geometry.ChasmClosureCore_v1`.
+
+Implementation: Removed the raised Terrain voxels over the newly closed rear
+fissure section and rebuilt the 26 x 328 stud Grass strip at a lower voxel
+height matching the surrounding meadow. House, ladder, fissure end, and wall
+vegetation were not moved.
+
+Verification: Before correction the closure strip raycast at X `17`, Z `-230`
+hit Terrain at Y `1189.5` while adjacent meadow hit Y `1185.25`. After rebuilding,
+the same strip hits Y `1185.0`; a fresh Play test kept the player beside the
+house at Y `1189.0` and an overhead capture confirmed the raised ridge is gone.
+
+Performance: Not measured; no new instances were added.
+
+Limitations: Natural directional shadows from the house and garden remain
+visible across the grass and can still read as darker grass from a vertical
+camera.
+
+Next: Keep the meadow level fixed and evaluate composition from the supplied
+reference camera rather than an editor-only vertical view.
