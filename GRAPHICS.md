@@ -188,6 +188,10 @@ Current production elements:
   rejected 24-MeshPart v3 shell is archived under
   `ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`; no procedural
   3D wall-grass shell is active in the live map.
+- Unrelated `AscentGame` obby content, its `AscentServer`, `AscentHUD`, and
+  `AscentRemotes`, plus the default `Baseplate` and disabled default spawn,
+  are archived under
+  `ServerStorage.MapArchives.ArchivedOtherContributor_AscentGame_2026_11_21`.
 - A second-generation local Blender cliff-shell candidate now covers the front,
   both outer sides, and both inner chasm walls. It is validated and exported,
   but has not been uploaded or inserted into Roblox pending visual review.
@@ -984,3 +988,25 @@ the immediate spawn area.
 
 Next: Keep the spawn unchanged while the next visual prototype is developed
 outside the live map.
+
+### 2026-11-21 — Remove unrelated contributor content
+
+Scope: Workspace clutter outside `Workspace.PinkHouseMap`.
+
+Implementation: Moved the separate `Workspace.AscentGame` obby (StartZone,
+Routes, Checkpoints, Coins, Summit, and scenery), `ServerScriptService.AscentServer`,
+`StarterPlayer.StarterPlayerScripts.AscentHUD`, `ReplicatedStorage.AscentRemotes`,
+and the default `Workspace.Baseplate`/disabled `Workspace.SpawnLocation` into
+`ServerStorage.MapArchives.ArchivedOtherContributor_AscentGame_2026_11_21`.
+
+Verification: Edit-mode Workspace now contains only `Terrain`, `PinkHouseMap`,
+and the Studio camera; the unrelated obby and default baseplate are no longer
+active. The place was saved to Roblox as version 47.
+
+Performance: Not measured; removed 421 obby descendants and the 2048-stud
+default baseplate from active Workspace.
+
+Limitations: Archived content remains recoverable in ServerStorage and is not
+published as active gameplay.
+
+Next: Continue only with the Pink House vertical slice.
