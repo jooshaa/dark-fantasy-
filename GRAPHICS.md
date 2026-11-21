@@ -171,8 +171,9 @@ Current production elements:
 - The rejected 62-emitter vapor layer is archived rather than active. Terrain
   Clouds now provide the sky layer without washing out the house and meadow.
 - `HouseTestSpawn` is active on the safe side of the cottage at approximately
-  `(145, 1185.75, 185)`; both the older map spawn and the default Workspace spawn
-  are disabled.
+  `(145, 1185.5, 185)` above the invisible collidable
+  `HouseSpawnSafetyPlatform`; both the older map spawn and the default Workspace
+  spawn are disabled.
 - The complete upper meadow now has a real Terrain Grass surface at the correct
   plateau elevation across the left, right, and rear sections while preserving
   the single open fissure. Former opaque GrassCap parts are hidden and no longer
@@ -961,3 +962,25 @@ shell. The retained backing/collision cliff art is not a 1:1 visual match.
 Next: Produce and render a small isolated Blender wall-grass proof from the
 fixed reference camera. Do not alter the live map until that proof passes visual
 review.
+
+### 2026-11-21 — Stable upper spawn beside house
+
+Scope: `Workspace.PinkHouseMap.HouseTestSpawn` and new
+`Workspace.PinkHouseMap.HouseSpawnSafetyPlatform`.
+
+Implementation: Kept only `HouseTestSpawn` enabled, placed it at
+`(145, 1185.5, 185)`, and added an invisible anchored 40 x 2 x 40 stud collision
+platform beneath it at `(145, 1184, 185)` so streaming cannot drop a newly
+spawned character through the upper meadow.
+
+Verification: A fresh four-second Play test placed the HumanoidRootPart at
+`(140.75, 1189.00, 182.66)` and confirmed `Y > 1100`; the character remained on
+the upper plateau beside the house instead of falling to the lower meadow.
+
+Performance: Not measured; one static invisible Part was added.
+
+Limitations: The safety platform is intentionally invisible and only protects
+the immediate spawn area.
+
+Next: Keep the spawn unchanged while the next visual prototype is developed
+outside the live map.
