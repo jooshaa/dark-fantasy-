@@ -203,10 +203,11 @@ Current production elements:
 - The cottage is now axis-aligned with the fissure instead of yawed 31.477
   degrees. Its stone foundation is embedded 0.5 stud into the Terrain surface,
   eliminating the visible floating gap.
-- `InclinedLadder_v1` is approximately 21 studs wide and 155 studs long, slopes
-  about 57 degrees above horizontal into the fissure, and uses one invisible
-  aligned TrussPart for climbing coverage. The rejected 1,052-stud ladder is
-  archived under `BeforeShortChasmComposition_2026_11_21`.
+- `InclinedLadder_v2` is approximately 21 studs wide and 166 studs long, lies at
+  about 29 degrees above horizontal into the fissure, and uses one invisible
+  aligned TrussPart for climbing coverage. The rejected 57-degree version is
+  archived under `BeforeLadderSlope30_2026_11_21`; the original 1,052-stud
+  ladder remains archived under `BeforeShortChasmComposition_2026_11_21`.
 - The visible fissure was shortened from approximately 616 to 292 studs. The
   house/garden group moved from Z `100` to Z `-170`, leaving roughly 25 studs
   between its nearest edge and the new fissure end at Z `-275`.
@@ -1066,3 +1067,25 @@ camera.
 
 Next: Keep the meadow level fixed and evaluate composition from the supplied
 reference camera rather than an editor-only vertical view.
+
+### 2026-11-21 — Lower ladder to reference-like slope
+
+Scope: `Workspace.PinkHouseMap.InclinedLadder_v1` only.
+
+Implementation: Archived the 57-degree ladder under
+`ServerStorage.MapArchives.BeforeLadderSlope30_2026_11_21` and replaced it with
+`InclinedLadder_v2`. The new ladder runs from `(16.97, 1105, -420)` to
+`(16.97, 1185, -275)`, with two wood rails, 27 rungs, and one invisible aligned
+TrussPart climb surface.
+
+Verification: Calculated length is 165.60 studs and slope is 28.89 degrees above
+horizontal. A close side capture confirmed the ladder now lies along the chasm
+instead of reading as nearly vertical.
+
+Performance: Not measured; active ladder contains 30 parts.
+
+Limitations: This remains a composition-quality Roblox ladder rather than a
+final Blender hero asset.
+
+Next: Keep the approved slope fixed and manually test full R15 traversal before
+any art replacement.
