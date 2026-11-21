@@ -157,7 +157,7 @@ Current production elements:
 - Separate left/right front cliff cores and a continuous rear plateau.
 - Generated PBR MaterialVariants for overgrown rock and meadow grass.
 - Hundreds of varied hanging-growth strips on the front, sides, and chasm walls.
-- A long functional ladder and small top landing.
+- A short functional inclined ladder at the house-end of the fissure.
 - Terrain lower meadow and enabled Workspace streaming.
 - A Blender-authored low pink cross-gabled cottage with framed windows, porch,
   tiled roof, chimney, stone foundation, and an 86-object garden kit has replaced
@@ -171,7 +171,7 @@ Current production elements:
 - The rejected 62-emitter vapor layer is archived rather than active. Terrain
   Clouds now provide the sky layer without washing out the house and meadow.
 - `HouseTestSpawn` is active on the safe side of the cottage at approximately
-  `(145, 1185.5, 185)` above the invisible collidable
+  `(145, 1185.5, -85)` above the invisible collidable
   `HouseSpawnSafetyPlatform`; both the older map spawn and the default Workspace
   spawn are disabled.
 - The complete upper meadow now has a real Terrain Grass surface at the correct
@@ -203,9 +203,13 @@ Current production elements:
 - The cottage is now axis-aligned with the fissure instead of yawed 31.477
   degrees. Its stone foundation is embedded 0.5 stud into the Terrain surface,
   eliminating the visible floating gap.
-- The replacement ladder is approximately 24.5 studs wide and 1,052 studs long,
-  slopes into the fissure, and uses 12 overlapping invisible TrussPart sections
-  for continuous climbing coverage.
+- `InclinedLadder_v1` is approximately 21 studs wide and 155 studs long, slopes
+  about 57 degrees above horizontal into the fissure, and uses one invisible
+  aligned TrussPart for climbing coverage. The rejected 1,052-stud ladder is
+  archived under `BeforeShortChasmComposition_2026_11_21`.
+- The visible fissure was shortened from approximately 616 to 292 studs. The
+  house/garden group moved from Z `100` to Z `-170`, leaving roughly 25 studs
+  between its nearest edge and the new fissure end at Z `-275`.
 
 This is the first production pass, not final 1:1 art. Composition and playable
 scale are established; authored cliff meshes, foliage cards, final house meshes,
@@ -250,9 +254,9 @@ audio, and reference-matched cinematography remain.
   closely. Its materials are currently Roblox material/color assignments rather
   than final baked PBR texture sets, and the roof intersections need one more
   polish pass.
-- The house/garden group now sits immediately beside the fissure entrance. Its
-  center is approximately `(45, 168)` in XZ and the door-to-ladder-top horizontal
-  distance is about 37 studs, reduced from the original roughly 87 studs.
+- The house/garden group now sits immediately beside the shortened fissure end.
+  Its pivot is approximately `(34, -170)` in XZ; the nearest house/garden edge
+  is about 25 studs behind the fissure end at Z `-275`.
 - Terrain grass height is engine-controlled and is taller/coarser than the
   short photographic grass in the reference at close gameplay distance.
 
@@ -1010,3 +1014,32 @@ Limitations: Archived content remains recoverable in ServerStorage and is not
 published as active gameplay.
 
 Next: Continue only with the Pink House vertical slice.
+
+### 2026-11-21 — Short fissure and inclined ladder composition pass
+
+Scope: `Workspace.PinkHouseMap` house/garden placement, upper fissure,
+`Geometry.ChasmEndWall`, ladder, Terrain grass closure, and house spawn.
+
+Implementation: Archived the previous house pose, 1,052-stud ladder, and end
+wall under `ServerStorage.MapArchives.BeforeShortChasmComposition_2026_11_21`.
+Moved the house pivot from Z `100` to `-170`, moved the fissure end from Z `49`
+to `-275`, added `ChasmClosureCore_v1` plus a Terrain Grass surface over the
+closed rear section, and replaced the old ladder with `InclinedLadder_v1`: two
+wood rails, 25 rungs, and one invisible climb surface between `(16.97, 1055,
+-360)` and `(16.97, 1185, -275)`. Moved `HouseTestSpawn` and its invisible
+40 x 2 x 40 safety platform beside the relocated house.
+
+Verification: Edit-mode aerial/front/close captures confirmed the house beside
+the shortened fissure and the ladder visibly inclined inside it. A fresh
+four-second Play test kept the HumanoidRootPart on the upper plateau at
+`(149.10, 1189.00, -84.39)` instead of dropping to the lower meadow.
+
+Performance: Not measured; active ladder geometry dropped from 165 descendants
+over 1,052 studs to 28 parts over 155 studs.
+
+Limitations: The new ladder is a composition-quality Roblox build rather than a
+final Blender hero asset. Cliff-wall vegetation remains deliberately unchanged
+for a separate approved prototype.
+
+Next: Manually test the ladder climb with a normal R15 character, then address
+only the cliff-wall vegetation after approving a small Blender proof.
