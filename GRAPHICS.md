@@ -179,13 +179,15 @@ Current production elements:
   cover the rendered Terrain blades.
 - Nine tiled hanging-grass texture faces cover the front, outer sides, rear, and
   inner fissure walls over a continuous dark-green collision core.
-- A first modular 3D hanging-grass layer now breaks the flat wall treatment:
-  374 non-colliding MeshPart instances use eight reusable Blender-authored edge
-  and long-drop variants across the upper lips, outer walls, and fissure walls.
-- The camera-critical front face and both inner fissure walls additionally use
-  130 dense 3D wall-grass panels. Each panel contains 650 crossed grass blades
-  projecting outward over the tiled texture, so close oblique views show real
-  depth while the texture fills distant gaps.
+- The earlier sparse 374-instance hanging-grass experiment remains preserved in
+  the failed-wall-grass archive and is not active; it is not mixed into the
+  restored dense layer.
+- The camera-critical front face and both inner fissure walls now use the
+  restored static `DenseWallGrass3D_v2_Static` layer: 130 non-colliding
+  MeshParts, each containing 650 crossed grass blades. The layer was translated
+  by `(16.9704, 175.2394, -64)` to the current map coordinates and ends below
+  the upper meadow lip, so close oblique views show actual geometric depth
+  without plants protruding over the plateau.
 - A second-generation local Blender cliff-shell candidate now covers the front,
   both outer sides, and both inner chasm walls. It is validated and exported,
   but has not been uploaded or inserted into Roblox pending visual review.
@@ -234,10 +236,10 @@ audio, and reference-matched cinematography remain.
 - The hanging-grass albedo backing image is still awaiting Roblox moderation;
   walls intentionally fall back to solid dark green until asset
   `81298258373496` becomes available.
-- The v1 geometric grass is intentionally a restrained silhouette/detail layer
-  over the tiled wall texture, not a full blade-for-blade wall simulation. It
-  still needs runtime draw-call profiling and a second organic-shape pass;
-  close views can reveal repeated ribbon clusters.
+- The restored dense geometric wall grass is true 3D, but its four reusable
+  panel variants still reveal a regular crossed-blade lattice at close range.
+  It needs a second Blender pass with irregular clumping, length variation,
+  droop, and broken panel seams before it can be called final reference art.
 - Dense wall-grass coverage currently targets the front face and inner fissure.
   Outer side and rear walls still rely mainly on the tiled texture and lip
   fringe until the 507k-triangle hero-wall pass is profiled.
@@ -253,10 +255,11 @@ audio, and reference-matched cinematography remain.
 
 ## Next Priorities
 
-1. Replace the smooth continuous wall with a non-perforating authored grass and
-   soil shell; keep exactly one readable fissure and the existing collision cores.
-2. Profile and consolidate the new 3D grass modules, then add more organic
-   silhouette variants only where fixed reference cameras expose repetition.
+1. Re-author the active dense wall-grass panels with irregular hanging clumps,
+   droop and broken seams while preserving the current true-3D coverage and the
+   single readable fissure.
+2. Extend dense geometry to outer/rear walls only after fixed-camera profiling;
+   keep the PBR wall as the distant backing surface.
 3. Add unique PBR breakup and tune grass/cliff response against fixed matched
    video cameras.
 4. Polish the Blender cottage roof intersections and create final plaster, tile,
@@ -339,8 +342,9 @@ audio, and reference-matched cinematography remain.
   `e7f8fb9b1a76554c72bd678b51548e2a1004971a7db33efdac45a587bf911893`.
 - Roblox Model asset `88989842398880` stores the four dense panel variants.
   The source package is preserved under
-  `ServerStorage.ImportedAssetSources.DenseWallGrassPanelsV1`; 130 active
-  non-colliding clones are under `Workspace.PinkHouseMap.DenseWallGrass3D_v1`.
+  `ServerStorage.ImportedAssetSources.DenseWallGrassPanelsV1`; 130 active,
+  anchored, double-sided, non-colliding and shadowless clones are under
+  `Workspace.PinkHouseMap.DenseWallGrass3D_v2_Static`.
 - The cliff GLB was uploaded once as permanent Model asset `124672594627247`
   and inserted as the package copy `Workspace.PinkHouseMap.AuthoredFrontCliff`.
   The imported 280-stud height was corrected by a 3.571429 scale factor to the
@@ -858,3 +862,35 @@ existing hanging-growth strips still dominate the facade at distance.
 Next: Extend authored geometry around the sides, replace repeated growth strips
 with optimized foliage cards, then re-run scene analysis from matched reference
 cameras.
+
+### 2026-11-21 — Static true-3D cliff grass restored
+
+Scope: `Workspace.PinkHouseMap.DenseWallGrass3D_v2_Static`, the front monolith
+face, and both inner fissure walls.
+
+Implementation: Restored 130 dense Blender-authored MeshPart panels from
+`ServerStorage.MapArchives.FailedWallGrass_2026_11_20.DenseWallGrass3D_v1` and
+translated them by `(16.9704, 175.2394, -64)` into the current map coordinates.
+Each panel contains 650 crossed blades. All panels are anchored, double-sided,
+non-colliding, non-queryable, shadowless, and use Performance render fidelity.
+No distance controller or custom streaming script was restored.
+
+Verification: Edit-mode face-on and close oblique captures confirmed continuous
+front/fissure coverage, visible blade depth, correct alignment below the upper
+meadow, and no plants standing above the lip. A fresh Play session confirmed
+the layer streams normally with Workspace streaming.
+
+Performance: At a close fissure camera, SceneAnalysis measured 94,127 total
+triangles and 187 draw calls: Opaque 86,340/8, Terrain 4,892/147, Terrain Grass
+2,888/25, Transparent 1/1, and Clouds 6/6. Thirty of the 130 wall panels were
+streamed to that client view. The spawn view remained 268,330 creator-controlled
+triangles and 157 draws excluding engine shadow passes.
+
+Limitations: Four repeating panel variants create a visible crossed-blade grid
+at very close range. Dense geometry currently covers the front and inner
+fissure, not the outer sides or rear wall.
+
+Next: Create an irregular v3 Blender panel set with clumped hanging blades,
+length variation and broken seams, then compare it against the supplied video
+from the same fixed oblique camera before replacing this accepted functional
+3D baseline.
