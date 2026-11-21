@@ -1,6 +1,6 @@
 # Graphics and Environment Context
 
-Last updated: 2026-11-20
+Last updated: 2026-11-21
 
 ## Project Direction
 
@@ -168,14 +168,15 @@ Current production elements:
 - Realistic LightingStyle, dynamic Terrain clouds, global wind, Atmosphere,
   subtle bloom/color correction/sun rays, and disabled
   gameplay depth of field.
-- Two non-spherical vapor cloud layers now supplement Terrain Clouds: 24 upper
-  mist banks around Y=1050-1080 and 38 broad lower banks around Y=520-650.
-  Together they distribute 62 irregular vapor anchors across the horizon.
+- The rejected 62-emitter vapor layer is archived rather than active. Terrain
+  Clouds now provide the sky layer without washing out the house and meadow.
 - `HouseTestSpawn` is active on the safe side of the cottage at approximately
   `(145, 1015, 185)`; both the older map spawn and the default Workspace spawn
   are disabled.
-- The complete upper meadow now has a thin real Terrain Grass layer across the
-  left, right, and rear plateau sections while preserving the open fissure.
+- The complete upper meadow now has a real Terrain Grass surface at the correct
+  plateau elevation across the left, right, and rear sections while preserving
+  the single open fissure. Former opaque GrassCap parts are hidden and no longer
+  cover the rendered Terrain blades.
 - Nine tiled hanging-grass texture faces cover the front, outer sides, rear, and
   inner fissure walls over a continuous dark-green collision core.
 - A first modular 3D hanging-grass layer now breaks the flat wall treatment:
@@ -193,6 +194,9 @@ Current production elements:
   canyon and perforated front facade are archived rather than deleted.
 - The cottage is scaled to approximately 167 x 105 x 227 studs and surrounded
   by a denser 123-instance garden pass of shrubs, flowers, and stones.
+- The cottage is now axis-aligned with the fissure instead of yawed 31.477
+  degrees. Its stone foundation is embedded 0.5 stud into the Terrain surface,
+  eliminating the visible floating gap.
 - The replacement ladder is approximately 24.5 studs wide and 1,052 studs long,
   slopes into the fissure, and uses 12 overlapping invisible TrussPart sections
   for continuous climbing coverage.
@@ -244,6 +248,8 @@ audio, and reference-matched cinematography remain.
 - The house/garden group now sits immediately beside the fissure entrance. Its
   center is approximately `(45, 168)` in XZ and the door-to-ladder-top horizontal
   distance is about 37 studs, reduced from the original roughly 87 studs.
+- Terrain grass height is engine-controlled and is taller/coarser than the
+  short photographic grass in the reference at close gameplay distance.
 
 ## Next Priorities
 
@@ -701,6 +707,45 @@ true grass decoration.
 
 Next: Fix the floating cottage placement, then design one optimized authored
 cliff-surface solution and approve it from a small visual test before scaling.
+
+### 2026-11-21 — House grounding and real upper grass correction
+
+Scope: `Workspace.PinkHouseMap.PinkHouse_Blender_v2`, upper plateau Terrain,
+cliff materials, test spawn, clouds, and rejected atmosphere archive.
+
+Implementation: Archived the pre-change cottage and the complete 62-emitter
+`VolumetricCloudLayers_v1` under
+`ServerStorage.MapArchives.BeforeGroundingAndGrass_2026_11_21`. Straightened the
+cottage from 31.477 degrees to world-axis alignment, shifted it toward the
+fissure centerline, and lowered it until `StoneFoundation_mesh` sits 0.5 stud
+below the measured Terrain surface at Y=1185.25. Rebuilt Grass Terrain at the
+actual plateau height, hid the three flat GrassCap cover parts, enabled Terrain
+decoration, and set a darker reference-oriented Grass material color. Corrected
+the cliff cores to use the Rock base required by their existing overgrown PBR
+MaterialVariants, brightened their tint, removed shadows from invisible ladder
+climb surfaces, softened Terrain Clouds, and aimed `HouseTestSpawn` toward the
+house.
+
+Verification: Fixed-view captures confirm a level grounded cottage, visible
+Terrain blades across the upper meadow, no white particle washout, and textured
+grass/rock cliff walls. Fresh Play placed the HumanoidRootPart at approximately
+`(142.8, 1189.25, 184.6)` beside the house. Foundation bottom measured
+Y=1184.75 against Terrain Y=1185.25.
+
+Performance: Spawn-view SceneAnalysis measured 270,470 creator-controlled
+triangles and 162 draw calls excluding shadow passes (Grass 227,304/33,
+Terrain 33,720/76, Opaque 9,440/47, Transparent 1/1, Clouds 5/5). Runtime scene
+contained 957 instances. Shadow passes were 1,346,856 triangles/771 draws and
+are engine-driven.
+
+Limitations: The large cliff silhouette remains mostly core-based and the
+overgrown PBR pattern reads horizontally at close range; it is an optimized
+surface treatment, not final authored hanging vegetation. Terrain grass blade
+height cannot match the short reference lawn exactly. House materials still
+need unique final PBR maps.
+
+Next: Build and approve one camera-matched authored cliff-wall module with
+vertical hanging growth, then apply it only after side-by-side reference review.
 
 ### 2026-11-20 — Near and lower vapor cloud layers
 
