@@ -149,11 +149,13 @@ original 166-descendant greybox is preserved under
 
 Current production elements:
 
-- An eight-piece Blender-authored irregular front-cliff facade imported as a
-  permanent Roblox Model asset, aligned around the central chasm and layered in
-  front of the retained collision cores.
-- A roughly 1,000-stud-tall plateau composed so that the narrow fissure ends
-  near the house instead of cutting through the entire world.
+- An eight-piece Blender-authored irregular front-cliff facade is retained as a
+  permanent Roblox Model asset and in the recovery history, but is not active
+  in the current live map; the retained collision cores carry the visible wall
+  treatment for this composition pass.
+- A roughly 501-stud vertical separation between the upper and lower meadows,
+  composed so that the narrow fissure ends near the house instead of cutting
+  through the entire world.
 - Separate left/right front cliff cores and a continuous rear plateau.
 - Generated PBR MaterialVariants for overgrown rock and meadow grass.
 - Hundreds of varied hanging-growth strips on the front, sides, and chasm walls.
@@ -171,7 +173,7 @@ Current production elements:
 - The rejected 62-emitter vapor layer is archived rather than active. Terrain
   Clouds now provide the sky layer without washing out the house and meadow.
 - `HouseTestSpawn` is active on the safe side of the cottage at approximately
-  `(145, 1185.5, -85)` above the invisible collidable
+  `(145, 503.5, -85)` above the invisible collidable
   `HouseSpawnSafetyPlatform`; both the older map spawn and the default Workspace
   spawn are disabled.
 - The complete upper meadow now has a real Terrain Grass surface at the correct
@@ -192,9 +194,8 @@ Current production elements:
   `AscentRemotes`, plus the default `Baseplate` and disabled default spawn,
   are archived under
   `ServerStorage.MapArchives.ArchivedOtherContributor_AscentGame_2026_11_21`.
-- A second-generation local Blender cliff-shell candidate now covers the front,
-  both outer sides, and both inner chasm walls. It is validated and exported,
-  but has not been uploaded or inserted into Roblox pending visual review.
+- A second-generation local Blender cliff-shell candidate is validated and
+  exported, but is not active in Roblox pending visual review.
 - The active Studio composition has been corrected to one continuous upper
   meadow with one narrow fissure ending before the house. The false horizontal
   canyon and perforated front facade are archived rather than deleted.
@@ -211,6 +212,11 @@ Current production elements:
 - The visible fissure was shortened from approximately 616 to 292 studs. The
   house/garden group moved from Z `100` to Z `-170`, leaving roughly 25 studs
   between its nearest edge and the new fissure end at Z `-275`.
+- The upper meadow surface is now approximately Y `503` while the lower meadow
+  remains approximately Y `2`. The active cliff cores are 500 studs tall with
+  tops at approximately Y `493`; the house, ladder, spawn, and upper Terrain
+  were lowered together by 682 studs. The complete pre-change map is preserved
+  under `ServerStorage.MapArchives.BeforeHalfHeightCliff_2026_11_21`.
 
 This is the first production pass, not final 1:1 art. Composition and playable
 scale are established; authored cliff meshes, foliage cards, final house meshes,
@@ -218,9 +224,10 @@ audio, and reference-matched cinematography remain.
 
 ## Known Limitations
 
-- The front face now has an authored irregular mesh shell, but the side and rear
-  silhouettes still expose large Part-based cores. Hanging-growth strips improve
-  the read; authored side modules and foliage cards are still needed.
+- The front, side, and rear silhouettes currently expose large Part-based cores
+  with tiled wall treatment. The authored cliff candidates are retained for
+  recovery but are not active; approved authored geometry and foliage cards are
+  still needed.
 - Generated PBR grass is darker than the bright reference in some camera angles;
   lighting, tint, and material selection need another matching pass.
 - The house is a detailed modular Part build, not yet a final Blender-authored
@@ -281,6 +288,8 @@ audio, and reference-matched cinematography remain.
 8. Validate representative desktop and mobile camera paths, not only the current
    spawn view.
 9. Finish this vertical slice before producing additional maps.
+10. Keep the approved approximately 501-stud upper/lower meadow separation fixed
+    unless a new reference-matched composition pass explicitly replaces it.
 
 ## Implementation Notes
 
@@ -365,13 +374,17 @@ audio, and reference-matched cinematography remain.
   `Workspace.PinkHouseMap.CliffGrassShellV3`, then rejected and moved to
   `ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`. It is retained
   only for audit/recovery and is not active gameplay geometry.
-- The cliff GLB was uploaded once as permanent Model asset `124672594627247`
-  and inserted as the package copy `Workspace.PinkHouseMap.AuthoredFrontCliff`.
-  The imported 280-stud height was corrected by a 3.571429 scale factor to the
-  intended 1,000 studs. The eight modules were separated around a roughly
-  25-stud central opening, anchored, made non-collidable, and assigned the
-  existing `pinkhouse_overgrown_cliff` MaterialVariant. Existing cliff cores
-  remain responsible for collision.
+- The cliff GLB was uploaded once as permanent Model asset `124672594627247`.
+  Its prior package copy used a 3.571429 scale factor and was separated around a
+  roughly 25-stud central opening. It is no longer active in
+  `Workspace.PinkHouseMap`; the current 500-stud cliff cores remain responsible
+  for collision and wall presentation.
+- The half-height composition keeps the lower meadow at approximately Y `2`,
+  places the upper Terrain Grass surface at approximately Y `503`, and uses
+  500-stud cores centered at Y `243.239` with tops at Y `493.239`. The cottage
+  bounding-box bottom is Y `499.232`, so its foundation is embedded rather than
+  floating. `InclinedLadder_v2` and the house spawn were translated with the
+  upper composition rather than rebuilt independently.
 
 ## Audit Log
 
@@ -1089,3 +1102,34 @@ final Blender hero asset.
 
 Next: Keep the approved slope fixed and manually test full R15 traversal before
 any art replacement.
+
+### 2026-11-21 — Half-height cliff composition
+
+Scope: `Workspace.PinkHouseMap` cliff cores, upper Terrain meadow, cottage,
+`InclinedLadder_v2`, house spawn, and lower chasm floor.
+
+Implementation: Preserved the complete pre-change map at
+`ServerStorage.MapArchives.BeforeHalfHeightCliff_2026_11_21.PinkHouseMap_PreHalfHeight`.
+Reduced `LeftCliffCore`, `RightCliffCore`, `RearPlateauCore`, `ChasmEndWall`, and
+`ChasmClosureCore_v1` from 1,000 to 500 studs tall, keeping their new tops at
+Y `493.239`. Lowered the upper Terrain, cottage, ladder, spawn, and safety
+platform by 682 studs while retaining the lower meadow near Y `2`; moved the
+chasm floor to Y `5`.
+
+Verification: Edit raycasts measured upper Terrain at Y `503.016` and lower
+Terrain at Y `2`, a 501.016-stud vertical separation. The cottage bounding-box
+bottom is Y `499.232`, embedded below the meadow surface rather than floating.
+An aerial capture confirmed the reduced silhouette. A fresh three-second Play
+test placed the HumanoidRootPart at `(144.69, 507.00, -84.95)` beside the house
+with full health. The place was saved to Roblox as version 51.
+
+Performance: Not measured; no new active rendering geometry was added, and the
+five active cliff cores contain half their previous vertical area. One complete
+recovery clone remains in ServerStorage and does not render during gameplay.
+
+Limitations: Wall materials and vegetation remain a separate unresolved art
+pass. The current cliff silhouette is still core-based and deliberately keeps
+the approved upper meadow, house, fissure, and ladder layout unchanged.
+
+Next: Keep this approximately 501-stud height fixed while developing one small
+approved wall-surface proof before any further live-map vegetation replacement.
