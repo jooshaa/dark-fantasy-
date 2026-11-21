@@ -171,7 +171,7 @@ Current production elements:
 - The rejected 62-emitter vapor layer is archived rather than active. Terrain
   Clouds now provide the sky layer without washing out the house and meadow.
 - `HouseTestSpawn` is active on the safe side of the cottage at approximately
-  `(145, 1015, 185)`; both the older map spawn and the default Workspace spawn
+  `(145, 1185.75, 185)`; both the older map spawn and the default Workspace spawn
   are disabled.
 - The complete upper meadow now has a real Terrain Grass surface at the correct
   plateau elevation across the left, right, and rear sections while preserving
@@ -183,10 +183,10 @@ Current production elements:
   the failed-wall-grass archive and is not active; it is not mixed into the
   restored dense layer.
 - The rejected 130-panel v2 lattice is archived under
-  `ServerStorage.MapArchives.BeforeCliffGrassV3_2026_11_21`. The active
-  `CliffGrassShellV3` is a 24-MeshPart Blender-authored layer with 55,200
-  individually varied hanging blades covering the front face, both outer side
-  walls, and both inner fissure walls without a runtime distance controller.
+  `ServerStorage.MapArchives.BeforeCliffGrassV3_2026_11_21`. The subsequently
+  rejected 24-MeshPart v3 shell is archived under
+  `ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`; no procedural
+  3D wall-grass shell is active in the live map.
 - A second-generation local Blender cliff-shell candidate now covers the front,
   both outer sides, and both inner chasm walls. It is validated and exported,
   but has not been uploaded or inserted into Roblox pending visual review.
@@ -235,9 +235,9 @@ audio, and reference-matched cinematography remain.
 - The hanging-grass albedo backing image is still awaiting Roblox moderation;
   walls intentionally fall back to solid dark green until asset
   `81298258373496` becomes available.
-- The v3 wall layer removes the old crossed-panel lattice and horizontal edge
-  bars, but it still relies on a simple dark backing core and needs final colour,
-  density and camera matching before it can be called 1:1 reference art.
+- Both attempted procedural 3D wall-grass systems failed visual review. V3 also
+  created an unacceptable giant overhead surface in gameplay and is archived;
+  it must not be reinserted unchanged.
 - Dense wall-grass coverage currently targets the front face and inner fissure.
   Outer side and rear walls still rely mainly on the tiled texture and lip
   fringe until the 507k-triangle hero-wall pass is profiled.
@@ -253,9 +253,10 @@ audio, and reference-matched cinematography remain.
 
 ## Next Priorities
 
-1. Match the v3 wall density, colour and upper transition against the supplied
-   fixed video frames; remove any remaining visible core seam.
-2. Add rear-wall coverage only if a production camera can expose it; keep the
+1. Build one small isolated Blender wall-grass proof, render it from the exact
+   reference angle, and obtain visual approval before importing or changing the
+   live map again.
+2. Add rear-wall coverage only after the approved proof exists; keep the
    PBR wall as the distant backing surface.
 3. Add unique PBR breakup and tune grass/cliff response against fixed matched
    video cameras.
@@ -350,9 +351,10 @@ audio, and reference-matched cinematography remain.
   of approximately 1,414 x 940 x 1,017 studs before in-Studio orientation.
   GLB SHA-256 is
   `2f77ad6c57a98ad42bce571ba54861a406f4c3206a7fd8f32df55d3cd792c01a`.
-  Approved Model asset `100772135265591` is placed as
-  `Workspace.PinkHouseMap.CliffGrassShellV3`, repaired to approximately
-  1,390 x 1,000 x 614 studs, and aligned to the active cliff collision cores.
+  Approved Model asset `100772135265591` was tested as
+  `Workspace.PinkHouseMap.CliffGrassShellV3`, then rejected and moved to
+  `ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`. It is retained
+  only for audit/recovery and is not active gameplay geometry.
 - The cliff GLB was uploaded once as permanent Model asset `124672594627247`
   and inserted as the package copy `Workspace.PinkHouseMap.AuthoredFrontCliff`.
   The imported 280-stud height was corrected by a 3.571429 scale factor to the
@@ -933,3 +935,29 @@ claim of pixel-identical final art.
 
 Next: Tune the upper transition and wall colour from the supplied fixed frames,
 then continue with cloud scale/shadows and house proportion matching.
+
+### 2026-11-21 — Emergency rollback of rejected v3 shell
+
+Scope: `Workspace.PinkHouseMap.CliffGrassShellV3`, cliff-wall presentation, and
+all active `SpawnLocation` instances.
+
+Implementation: Removed the rejected v3 shell from the active map without
+deleting it by moving it to
+`ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`. Left the rejected
+v2 panels archived. Disabled every active spawn and then enabled only
+`Workspace.PinkHouseMap.HouseTestSpawn` at `(145, 1185.75, 185)`.
+
+Verification: A fresh Play session reported no active `CliffGrassShellV3` and
+placed the HumanoidRootPart at `(146.68, 1189.25, 189.41)`, 5.87 studs from the
+house test spawn. A gameplay capture confirmed the character beside the pink
+house with no giant overhead mesh.
+
+Performance: Not measured; this rollback removes 165,600 source triangles from
+the active scene.
+
+Limitations: The cliff walls currently have no approved true-3D vegetation
+shell. The retained backing/collision cliff art is not a 1:1 visual match.
+
+Next: Produce and render a small isolated Blender wall-grass proof from the
+fixed reference camera. Do not alter the live map until that proof passes visual
+review.
