@@ -159,7 +159,8 @@ Current production elements:
 - Separate left/right front cliff cores and a continuous rear plateau.
 - Generated PBR MaterialVariants for overgrown rock and meadow grass.
 - Hundreds of varied hanging-growth strips on the front, sides, and chasm walls.
-- A short functional inclined ladder at the house-end of the fissure.
+- A full-height functional inclined ladder connects the lower meadow to the
+  upper meadow at the house-end of the fissure.
 - Terrain lower meadow and enabled Workspace streaming.
 - A Blender-authored low pink cross-gabled cottage with framed windows, porch,
   tiled roof, chimney, stone foundation, and an 86-object garden kit has replaced
@@ -204,11 +205,14 @@ Current production elements:
 - The cottage is now axis-aligned with the fissure instead of yawed 31.477
   degrees. Its stone foundation is embedded 0.5 stud into the Terrain surface,
   eliminating the visible floating gap.
-- `InclinedLadder_v2` is approximately 21 studs wide and 166 studs long, lies at
-  about 29 degrees above horizontal into the fissure, and uses one invisible
-  aligned TrussPart for climbing coverage. The rejected 57-degree version is
-  archived under `BeforeLadderSlope30_2026_11_21`; the original 1,052-stud
-  ladder remains archived under `BeforeShortChasmComposition_2026_11_21`.
+- `InclinedLadder_v3` is approximately 21 studs wide and 590.25 studs long. It
+  runs from the lower meadow at `(16.97, 3.2, -589)` to the upper meadow at
+  `(16.97, 503, -275)` at 57.86 degrees above horizontal, almost exactly twice
+  the former 28.89-degree slope. It has two rails, 97 rungs, and three
+  overlapping invisible TrussPart climb surfaces spanning the full route. The
+  former short `InclinedLadder_v2` is archived under
+  `BeforeFullHeightLadder_2026_11_22`; the original 1,052-stud ladder remains
+  archived under `BeforeShortChasmComposition_2026_11_21`.
 - The visible fissure was shortened from approximately 616 to 292 studs. The
   house/garden group moved from Z `100` to Z `-170`, leaving roughly 25 studs
   between its nearest edge and the new fissure end at Z `-275`.
@@ -283,18 +287,19 @@ audio, and reference-matched cinematography remain.
    video cameras.
 4. Polish the Blender cottage roof intersections and create final plaster, tile,
    glass, stone, and garden PBR treatment.
-4. Refine the inclined ladder entrance and verify a complete manual climb with
-   a normal R15 character.
-5. Replace the ladder with an optimized authored model.
-6. Add roots, erosion, decals, soft low clouds, a distant meadow horizon, and
+5. Refine the full-height ladder's visible top and bottom landings against the
+   supplied reference while preserving its verified R15 traversal.
+6. Replace the 102-Part ladder prototype with an optimized authored model once
+   its final composition is approved.
+7. Add roots, erosion, decals, soft low clouds, a distant meadow horizon, and
    moving cloud-shadow treatment.
-7. Add layered wind, house, chasm, and ladder ambience.
-8. Validate representative desktop and mobile camera paths, not only the current
+8. Add layered wind, house, chasm, and ladder ambience.
+9. Validate representative desktop and mobile camera paths, not only the current
    spawn view.
-9. Finish this vertical slice before producing additional maps.
-10. Keep the approved approximately 501-stud upper/lower meadow separation fixed
+10. Finish this vertical slice before producing additional maps.
+11. Keep the approved approximately 501-stud upper/lower meadow separation fixed
     unless a new reference-matched composition pass explicitly replaces it.
-11. After any future vertical Terrain move, ray-test the full former elevation
+12. After any future vertical Terrain move, ray-test the full former elevation
     range so no detached voxel layer remains above the playable meadow.
 
 ## Implementation Notes
@@ -389,8 +394,12 @@ audio, and reference-matched cinematography remain.
   places the upper Terrain Grass surface at approximately Y `503`, and uses
   500-stud cores centered at Y `243.239` with tops at Y `493.239`. The cottage
   bounding-box bottom is Y `499.232`, so its foundation is embedded rather than
-  floating. `InclinedLadder_v2` and the house spawn were translated with the
-  upper composition rather than rebuilt independently.
+  floating. The then-active `InclinedLadder_v2` and the house spawn were
+  translated with the upper composition rather than rebuilt independently.
+- The active `InclinedLadder_v3` uses exact endpoints `(16.9704, 3.2, -589)`
+  and `(16.9704, 503, -275)`, a 590.25-stud route at 57.86 degrees. Its climb
+  collision is split into three overlapping 16.5-stud-wide TrussParts because
+  a single TrussPart was clamped to 512 studs and left both ends uncovered.
 - The detached old Terrain layer occupied approximately X `-720..740`,
   Y `1004..1012`, and Z `-580..2120`. The cleanup archived cell region
   `(-180,248,-145)` through `(185,256,530)` as
@@ -1172,3 +1181,32 @@ art, grass scale, clouds, and reference matching remain separate work.
 
 Next: Preserve the current clean vertical stack and continue only with an
 approved small wall-surface prototype.
+
+### 2026-11-22 — Full-height steeper ladder to lower meadow
+
+Scope: `Workspace.PinkHouseMap.InclinedLadder_v2`, its replacement
+`InclinedLadder_v3`, and the ladder recovery archive only.
+
+Implementation: Archived the former 165.60-stud, 28.89-degree ladder under
+`ServerStorage.MapArchives.BeforeFullHeightLadder_2026_11_22`. Built
+`InclinedLadder_v3` from `(16.9704, 3.2, -589)` on the lower meadow to
+`(16.9704, 503, -275)` on the upper meadow: 590.25 studs long at 57.86 degrees,
+with two rails and 97 rungs. Replaced the single clamped climb surface with
+three overlapping, invisible, 16.5-stud-wide TrussParts covering the complete
+route.
+
+Verification: Edit raycast measured the lower Terrain at Y `2`. A Play test
+started the R15 HumanoidRootPart at Y `5`; holding forward entered `Climbing`,
+crossed both TrussPart overlaps at measured Y `193.21` and `365.75`, and exited
+onto upper Terrain at `(17.03, 506.01, -220.56)` in `Running` state. Captures
+`FullHeightLadder_BasePlay` and `FullHeightSteepLadder_FinalPlaytest` verified
+the lower contact and upper exit. Saved to Roblox as version 60.
+
+Performance: Not measured; the active prototype contains 102 BaseParts.
+
+Limitations: The ladder is still a repeated-Part composition prototype rather
+than an optimized authored mesh, and the visible landings need a final
+reference-matching art pass.
+
+Next: Keep the verified route functional while polishing the visible landings,
+then consolidate the repeated geometry after composition approval.
