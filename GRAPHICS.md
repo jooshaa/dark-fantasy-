@@ -197,8 +197,12 @@ Current production elements:
   static MeshPart instances are active under
   `Workspace.PinkHouseMap.WallGrassProductionV1`. Coverage is limited to the
   complete left/right front cliff faces and both tapered inner fissure walls.
-  The parts are non-colliding, double-sided, SmoothPlastic, use four repeated
-  mesh variants, and rely on Workspace streaming plus Roblox instancing.
+  The parts are non-colliding, double-sided, use the Grass material and four
+  repeated mesh variants, and rely on Workspace streaming plus Roblox
+  instancing. Their four dark green tints compensate for the brighter lighting
+  response of vertical geometry. `StarterPlayerScripts.WallGrassWind` adds a
+  subtle client-only sway driven by `Workspace.GlobalWind` to at most the 96
+  nearest panels inside 175 studs.
 - Unrelated `AscentGame` obby content, its `AscentServer`, `AscentHUD`, and
   `AscentRemotes`, plus the default `Baseplate` and disabled default spawn,
   are archived under
@@ -282,11 +286,12 @@ audio, and reference-matched cinematography remain.
   and inner fissure. Outer side and rear walls still rely mainly on the backing
   treatment; expanding the high-density mesh there requires additional
   representative camera/device profiling rather than duplicating it blindly.
-- The active wall-grass proof is intentionally one green material without
-  baked PBR color variation, wind animation, selective shadow casting, or a
-  distant LOD mesh. Close views show real outward blade depth, but repeated
-  quadrant patterns and brightness transitions at the fissure lips still need
-  an art polish pass.
+- The active wall-grass proof still has no baked PBR color variation, selective
+  shadow casting, or authored distant LOD mesh. Close views show real outward
+  blade depth, but repeated quadrant patterns and brightness transitions at the
+  fissure lips still need an art polish pass. Current wind is a bounded visual
+  tilt of each 40 x 40 stud panel, not individual-blade deformation; a final
+  per-blade result would require a rigged/skinned replacement asset.
 - The new cottage matches the low single-storey cross-gabled read much more
   closely. Its materials are currently Roblox material/color assignments rather
   than final baked PBR texture sets, and the roof intersections need one more
@@ -299,9 +304,9 @@ audio, and reference-matched cinematography remain.
 
 ## Next Priorities
 
-1. Review the active front/fissure 3D wall-grass installation in gameplay and
-   decide whether blade density, color, projection depth, and repetition match
-   the reference before treating it as final art.
+1. Review the Terrain-matched wall-grass palette and bounded wind sway in
+   gameplay, then decide whether the remaining panel-level motion is acceptable
+   or a rigged/skinned per-blade Blender v2 asset is required.
 2. Add outer-side or rear-wall coverage only after representative desktop and
    mobile profiling; keep the current wall treatment as distant backing.
 3. Add unique PBR breakup and tune grass/cliff response against fixed matched
@@ -452,9 +457,16 @@ audio, and reference-matched cinematography remain.
   `-6.8..503.2`, at Z approximately `-488.35`. Fissure coverage spans Z
   `-487..-279` and follows the 55-to-22-stud wall taper over the same vertical
   range. Every clone is anchored, non-colliding/non-querying, double-sided,
-  `RenderFidelity = Performance`, `CastShadow = false`, SmoothPlastic, and RGB
-  `(87, 158, 69)`. No runtime grass update or custom distance-loading script
-  was added.
+  `RenderFidelity = Performance`, `CastShadow = false`, and uses
+  `Enum.Material.Grass`. The four corrected tint values are RGB `(54,82,39)`,
+  `(58,88,42)`, `(62,92,44)`, and `(56,85,40)`, derived from Terrain Grass RGB
+  `(78,118,56)` with a 0.75 vertical-surface brightness correction.
+- Client source `src/client/WallGrassWind.client.luau` is mirrored to
+  `StarterPlayer.StarterPlayerScripts.WallGrassWind`. It samples
+  `Workspace.GlobalWind`, refreshes nearby streamed panels every 0.4 seconds,
+  selects at most 96 panels inside 175 studs, and applies a subtle multi-wave
+  panel-root tilt at 30 Hz. Distant panels remain static and no server physics
+  objects are created.
 
 ## Audit Log
 
@@ -1404,3 +1416,40 @@ transitions remain visible from some angles.
 Next: Review the active result in gameplay, tune color/density/repetition if
 needed, then profile representative desktop and mobile routes before extending
 the mesh to non-hero walls.
+
+### 2026-11-22 — Wall-grass color match and bounded wind sway
+
+Scope: Active `Workspace.PinkHouseMap.WallGrassProductionV1`,
+`StarterPlayer.StarterPlayerScripts.WallGrassWind`, and durable client source
+`src/client/WallGrassWind.client.luau`.
+
+Implementation: Changed all 598 production wall-grass MeshParts from
+SmoothPlastic to Grass and applied four corrected dark-green tints derived from
+the Terrain Grass tint with a 0.75 wall-lighting correction. Added a client-only
+wind controller driven by `Workspace.GlobalWind`: it refreshes streamed panels
+every 0.4 seconds, animates only the nearest 96 panels inside 175 studs, updates
+at 30 Hz, and pivots each module at its wall root so it stays attached.
+
+Verification: Edit captures `WallGrass_ColorMatched_Edit` and
+`WallGrass_ColorMatched_Final` confirmed a darker wall palette closer to the
+meadow. In Play, 507 streamed production parts all reported Grass material and
+only the four intended RGB tints. A close-camera motion probe found 28 of the
+30 nearest panels moved over 0.4 seconds, with a maximum sampled rotation of
+0.236 degrees under GlobalWind `(2.3,0,0.7)`. Video capture
+`wob-1615000241` confirmed visible motion; console output contained no
+wall-grass script errors. `rojo build default.project.json` also completed
+successfully with the new client source included.
+
+Performance: No geometry was added; the prior close-view baseline remains
+455,586 triangles and 21 draw calls. Runtime work is hard-capped at 96 CFrame
+updates at 30 Hz plus a 0.4-second proximity refresh; isolated client CPU/GPU
+cost was not measured.
+
+Limitations: Motion tilts complete 40 x 40 stud panels rather than deforming
+individual blades. Lighting can still make isolated highlights warmer or
+brighter than horizontal Terrain grass, and outer/rear walls retain the static
+backing treatment.
+
+Next: Review the result from the normal ladder and house cameras; if panel-level
+motion is too rigid, replace the hero modules with a rigged/skinned Blender v2
+asset before expanding coverage.
