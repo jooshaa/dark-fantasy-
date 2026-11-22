@@ -1482,3 +1482,30 @@ Terrain lip between the top grass and upper wall blades.
 
 Next: Re-test in Play mode along the front cliff edge and fissure approach, then
 decide on outer-side/rear wall coverage or cottage PBR polish.
+
+### 2026-11-22 — Wall-grass top-row seating and root embed fix
+
+Scope: `Workspace.PinkHouseMap.WallGrassProductionV1` (`FrontLeft`,
+`FrontRight`, `FissureLeft`, `FissureRight`).
+
+Implementation: Horizontal raycasts across `Y = 490..504` showed the rounded
+upper Terrain shoulder curves inward above `Y = 501.5` (front) and `Y = 501.0`
+(fissure), causing the top 2–3 studs of the upper wall-grass panels
+(`topY = 503.38`) to float in mid-air beyond the rounded lip. Lowered the top
+row (`Y > 470`) of `FrontLeft` and `FrontRight` (34 panels) by `-2.2` studs
+(`topY = 501.18`), seated all 442 front panels `+0.35` studs deeper into the
+cliff (`+Z`, roots at `-486.45`), and lowered the top row of `FissureLeft` and
+`FissureRight` (12 panels) by `-2.8` studs (`topY = 500.58`).
+
+Verification: Grazing close-up Edit captures (`CliffEdge_GrazingCloseup_Front2`
+and `CliffEdge_GrazingCloseup_Fissure`) confirmed zero floating blades along
+both the front cliff rim and the fissure rim; every visible blade now emerges
+directly from the solid cliff/Terrain wall.
+
+Performance: Position-only adjustment on existing MeshParts; zero added
+geometry or draw calls.
+
+Limitations: None known for the top-lip attachment.
+
+Next: Playtest along the front and fissure edges to confirm the visual fix with
+`WallGrassWind` active.
