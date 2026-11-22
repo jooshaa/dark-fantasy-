@@ -1453,3 +1453,32 @@ backing treatment.
 Next: Review the result from the normal ladder and house cameras; if panel-level
 motion is too rigid, replace the hero modules with a rigged/skinned Blender v2
 asset before expanding coverage.
+
+### 2026-11-22 — Front cliff top-lip Terrain gap fix
+
+Scope: `Workspace.Terrain` upper meadow front lip along both left and right
+plateaus (`X = -683.03..-10.53` and `X = 44.47..716.97`, `Z = -485.6..-480.0`,
+`Y = 492.5..502.5`).
+
+Implementation: Diagnosed the floating wall-grass gap along the front cliff
+edge: front-edge Terrain voxels at `Z = -486` had only `0.25` occupancy, causing
+the Terrain lip to curve down and terminate near `Z = -484.5`, leaving a
+~3.5-stud empty trench between Terrain and `WallGrassProductionV1` (`Z = -488.35`,
+top `Y = 503.38`). Extended upper Terrain Grass forward to `Z = -485.6`
+(`0.40` voxel occupancy at `Z = -486`, `0.00` at `Z = -490`) across both front
+plateaus while keeping the central fissure (`X = -10.53..44.47`) open.
+
+Verification: Multi-angle Edit captures (`CliffEdge_SteepTop_After4`,
+`CliffEdge_FrontLip_After4`, `CliffEdge_FissureCorner_Check`) confirmed the
+empty gap and floating wall grass are gone from top, front, and fissure-corner
+views, with blades emerging directly from the Terrain lip and the central
+fissure untouched.
+
+Performance: Terrain voxel edit only; no new Parts, MeshParts, or draw calls
+added.
+
+Limitations: Close front-on views still show a narrow mossy-soil band from the
+Terrain lip between the top grass and upper wall blades.
+
+Next: Re-test in Play mode along the front cliff edge and fissure approach, then
+decide on outer-side/rear wall coverage or cottage PBR polish.
