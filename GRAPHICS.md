@@ -189,8 +189,16 @@ Current production elements:
 - The rejected 130-panel v2 lattice is archived under
   `ServerStorage.MapArchives.BeforeCliffGrassV3_2026_11_21`. The subsequently
   rejected 24-MeshPart v3 shell is archived under
-  `ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`; no procedural
-  3D wall-grass shell is active in the live map.
+  `ServerStorage.MapArchives.RejectedCliffGrassV3_2026_11_21`; neither rejected
+  system is active in the live map.
+- The approved Blender wall-grass proof is now a permanent Roblox Model asset
+  `134781478523523`. Its source package is preserved under
+  `ServerStorage.ImportedAssetSources.PinkHouseWallGrassProofV1`, and 598
+  static MeshPart instances are active under
+  `Workspace.PinkHouseMap.WallGrassProductionV1`. Coverage is limited to the
+  complete left/right front cliff faces and both tapered inner fissure walls.
+  The parts are non-colliding, double-sided, SmoothPlastic, use four repeated
+  mesh variants, and rely on Workspace streaming plus Roblox instancing.
 - Unrelated `AscentGame` obby content, its `AscentServer`, `AscentHUD`, and
   `AscentRemotes`, plus the default `Baseplate` and disabled default spawn,
   are archived under
@@ -227,9 +235,11 @@ Current production elements:
   the height reduction has been removed from the live sky. Its original voxel
   region is recoverable from
   `ServerStorage.MapArchives.BeforeOverheadTerrainCleanup_2026_11_22`.
-- An isolated 80 x 80 stud true-3D vertical wall-grass proof now exists in
-  Blender and GLB form. It is deliberately not imported or active in Roblox
-  until its density, projection, and top-lip silhouette receive visual approval.
+- The 80 x 80 stud true-3D vertical wall-grass proof remains reproducible in
+  Blender/GLB form and is now imported and tiled across the hero-visible cliff
+  surfaces for in-game review. The original one-module Studio placement is
+  archived under
+  `ServerStorage.MapArchives.BeforeWallGrassProductionV1_2026_11_22`.
 
 This is the first production pass, not final 1:1 art. Composition and playable
 scale are established; authored cliff meshes, foliage cards, final house meshes,
@@ -268,9 +278,15 @@ audio, and reference-matched cinematography remain.
 - Both attempted procedural 3D wall-grass systems failed visual review. V3 also
   created an unacceptable giant overhead surface in gameplay and is archived;
   it must not be reinserted unchanged.
-- Dense wall-grass coverage currently targets the front face and inner fissure.
-  Outer side and rear walls still rely mainly on the tiled texture and lip
-  fringe until the 507k-triangle hero-wall pass is profiled.
+- Dense true-3D wall-grass coverage currently targets the complete front face
+  and inner fissure. Outer side and rear walls still rely mainly on the backing
+  treatment; expanding the high-density mesh there requires additional
+  representative camera/device profiling rather than duplicating it blindly.
+- The active wall-grass proof is intentionally one green material without
+  baked PBR color variation, wind animation, selective shadow casting, or a
+  distant LOD mesh. Close views show real outward blade depth, but repeated
+  quadrant patterns and brightness transitions at the fissure lips still need
+  an art polish pass.
 - The new cottage matches the low single-storey cross-gabled read much more
   closely. Its materials are currently Roblox material/color assignments rather
   than final baked PBR texture sets, and the roof intersections need one more
@@ -283,10 +299,11 @@ audio, and reference-matched cinematography remain.
 
 ## Next Priorities
 
-1. Review the isolated 80 x 80 stud Blender wall-grass proof from its front,
-   oblique, side, and upper-lip captures; import it only after visual approval.
-2. Add rear-wall coverage only after the approved proof exists; keep the
-   PBR wall as the distant backing surface.
+1. Review the active front/fissure 3D wall-grass installation in gameplay and
+   decide whether blade density, color, projection depth, and repetition match
+   the reference before treating it as final art.
+2. Add outer-side or rear-wall coverage only after representative desktop and
+   mobile profiling; keep the current wall treatment as distant backing.
 3. Add unique PBR breakup and tune grass/cliff response against fixed matched
    video cameras.
 4. Polish the Blender cottage roof intersections and create final plaster, tile,
@@ -426,6 +443,18 @@ audio, and reference-matched cinematography remain.
   maximum triangles per mesh, bounds of approximately 81.00 x 5.59 x 81.36
   studs at 0.28 m/stud, and SHA-256
   `1272104348495e3eb5513a72001e666731e82785fd2a9b4fc5265dee0311d42f`.
+- Permanent Model asset `134781478523523` contains the five proof meshes. Its
+  imported source package is preserved at
+  `ServerStorage.ImportedAssetSources.PinkHouseWallGrassProofV1`. The active
+  `Workspace.PinkHouseMap.WallGrassProductionV1` uses 598 cloned quadrant
+  MeshParts: 221 on each front cliff half and 78 on each tapered fissure wall.
+  Front coverage spans X `-683.03..-10.53` and `44.47..716.97`, Y
+  `-6.8..503.2`, at Z approximately `-488.35`. Fissure coverage spans Z
+  `-487..-279` and follows the 55-to-22-stud wall taper over the same vertical
+  range. Every clone is anchored, non-colliding/non-querying, double-sided,
+  `RenderFidelity = Performance`, `CastShadow = false`, SmoothPlastic, and RGB
+  `(87, 158, 69)`. No runtime grass update or custom distance-loading script
+  was added.
 
 ## Audit Log
 
@@ -1331,3 +1360,47 @@ variation remain intentionally deferred.
 
 Next: Obtain visual approval for the four proof renders, then test one imported
 module in an isolated Studio area before changing the active cliff.
+
+### 2026-11-22 — Production 3D wall-grass installation
+
+Scope: Active `dark fantasy` place (`placeId 96826195026003`), permanent Model
+asset `134781478523523`, the proof source package, front cliff faces, tapered
+fissure walls, recovery archive, and project graphics handoff only.
+
+Implementation: Uploaded
+`exports/pink_house_wall_grass_proof_v1.glb` once as approved Model asset
+`134781478523523` and preserved its inserted package at
+`ServerStorage.ImportedAssetSources.PinkHouseWallGrassProofV1`. Archived the
+single-module test under
+`ServerStorage.MapArchives.BeforeWallGrassProductionV1_2026_11_22`, then built
+`Workspace.PinkHouseMap.WallGrassProductionV1` from 598 static MeshParts: 221
+per front half and 78 per inner fissure wall. Reused the four quadrant MeshIds,
+matched the 55-to-22-stud taper, disabled collision/query/touch and shadow
+casting, set double-sided SmoothPlastic RGB `(87,158,69)`, and used Performance
+render fidelity. No runtime loader, LocalScript, or procedural update loop was
+added.
+
+Verification: Edit captures `WallGrassProduction_FrontWide`,
+`WallGrassProduction_FrontClose`, `WallGrassProduction_Fissure`, and
+`WallGrassProduction_FissureInside` confirmed complete hero-wall coverage and
+real blades projecting horizontally from the vertical surfaces. A Play-mode
+SceneAnalysisService query from the close front camera reported 455,586 total
+triangles and 21 draw calls across the rendered scene: 454,352 opaque
+triangles/10 opaque draws, 1,228 Terrain triangles/5 Terrain draws, and five
+cloud draws. The place was saved to Roblox Team Create as version 72.
+
+Performance: The close-view scene measurement is 455,586 triangles and 21 draw
+calls. A 120-frame Studio/device-simulation sample reported approximately 15.0
+fps both with 507 streamed production MeshParts visible and with those same
+parts locally hidden, so that capped sample cannot isolate grass cost. Mesh
+reuse is batching effectively, but desktop/mobile frame profiling remains
+required before expanding coverage.
+
+Limitations: Outer side and rear walls are not covered by this dense proof.
+The active material has no baked PBR variation, wind, selective near-camera
+shadows, or authored distant LOD; repeated quadrants and bright fissure-edge
+transitions remain visible from some angles.
+
+Next: Review the active result in gameplay, tune color/density/repetition if
+needed, then profile representative desktop and mobile routes before extending
+the mesh to non-hero walls.
