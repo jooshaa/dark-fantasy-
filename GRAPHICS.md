@@ -1,6 +1,6 @@
 # Graphics and Environment Context
 
-Last updated: 2026-11-21
+Last updated: 2026-11-22
 
 ## Project Direction
 
@@ -217,6 +217,10 @@ Current production elements:
   tops at approximately Y `493`; the house, ladder, spawn, and upper Terrain
   were lowered together by 682 studs. The complete pre-change map is preserved
   under `ServerStorage.MapArchives.BeforeHalfHeightCliff_2026_11_21`.
+- The obsolete Grass Terrain slab left at approximately Y `1004`–`1012` after
+  the height reduction has been removed from the live sky. Its original voxel
+  region is recoverable from
+  `ServerStorage.MapArchives.BeforeOverheadTerrainCleanup_2026_11_22`.
 
 This is the first production pass, not final 1:1 art. Composition and playable
 scale are established; authored cliff meshes, foliage cards, final house meshes,
@@ -290,6 +294,8 @@ audio, and reference-matched cinematography remain.
 9. Finish this vertical slice before producing additional maps.
 10. Keep the approved approximately 501-stud upper/lower meadow separation fixed
     unless a new reference-matched composition pass explicitly replaces it.
+11. After any future vertical Terrain move, ray-test the full former elevation
+    range so no detached voxel layer remains above the playable meadow.
 
 ## Implementation Notes
 
@@ -385,6 +391,11 @@ audio, and reference-matched cinematography remain.
   bounding-box bottom is Y `499.232`, so its foundation is embedded rather than
   floating. `InclinedLadder_v2` and the house spawn were translated with the
   upper composition rather than rebuilt independently.
+- The detached old Terrain layer occupied approximately X `-720..740`,
+  Y `1004..1012`, and Z `-580..2120`. The cleanup archived cell region
+  `(-180,248,-145)` through `(185,256,530)` as
+  `OldOverheadGrassTerrain_Y992_1024`, then cleared only Y `968..1048`; the live
+  upper and lower meadow elevations were outside that operation.
 
 ## Audit Log
 
@@ -1133,3 +1144,31 @@ the approved upper meadow, house, fissure, and ladder layout unchanged.
 
 Next: Keep this approximately 501-stud height fixed while developing one small
 approved wall-surface proof before any further live-map vegetation replacement.
+
+### 2026-11-22 — Remove obsolete overhead Terrain slab
+
+Scope: `Workspace.Terrain` above the Pink House playable meadow.
+
+Implementation: Copied the obsolete Grass voxel layer into
+`ServerStorage.MapArchives.BeforeOverheadTerrainCleanup_2026_11_22.OldOverheadGrassTerrain_Y992_1024`
+for recovery, then cleared Terrain only across X `-740..760`, Y `968..1048`,
+and Z `-600..2200`. The cottage, cliff cores, ladder, current upper meadow, and
+lower meadow were not modified.
+
+Verification: Before cleanup, upward raycasts hit the detached Grass slab from
+Y `1003.984` to `1012.016`. After cleanup, a 35-point overhead ray grid found
+zero Terrain hits. The current upper surface still raycasts at Y `503.016` and
+the lower meadow at Y `2`. A fresh three-second Play test spawned the
+HumanoidRootPart at `(143.05, 507.00, -82.46)` and found no overhead hit within
+900 studs; gameplay and sky captures confirmed the slab is gone. Saved to
+Roblox as version 58.
+
+Performance: Not measured; one large detached rendered Terrain layer was
+removed. The recovery TerrainRegion remains in ServerStorage and does not
+render during gameplay.
+
+Limitations: This fixes only the accidental overhead voxel layer. Cliff-wall
+art, grass scale, clouds, and reference matching remain separate work.
+
+Next: Preserve the current clean vertical stack and continue only with an
+approved small wall-surface prototype.
