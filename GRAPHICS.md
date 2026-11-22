@@ -1509,3 +1509,36 @@ Limitations: None known for the top-lip attachment.
 
 Next: Playtest along the front and fissure edges to confirm the visual fix with
 `WallGrassWind` active.
+
+### 2026-11-23 — 2x wall-grass density pass (interleaved Layer2)
+
+Scope: `Workspace.PinkHouseMap.WallGrassProductionV1` (added
+`FrontLeft_Layer2`, `FrontRight_Layer2`, `FissureLeft_Layer2`,
+`FissureRight_Layer2`).
+
+Implementation: Doubled wall-grass coverage from 598 to 1,196 static MeshParts
+by cloning the four existing instanced MeshId variants into four sibling
+`*_Layer2` folders. Each Layer2 panel uses a different MeshId variant (`+2 mod 4`)
+and shifted Terrain-matched dark-green tint to eliminate z-fighting and break up
+repetition, with a `+0.08` stud outward offset and safe Y offsets (`-0.8` on top
+row so no blades rise above the seated top lip; `±0.65` on lower rows). All
+clones remain anchored, non-colliding, double-sided, `CastShadow = false`,
+`RenderFidelity = Performance`, `Material = Grass`.
+
+Verification: Edit captures (`WallGrass2x_FrontView`, `WallGrass2x_EdgeCloseup`,
+`WallGrass2x_FissureView`) confirmed visibly denser, layered 3D coverage across
+the front cliff and tapered fissure walls with zero floating lip blades and a
+clear ladder path. Play-mode client inspection confirmed 1,014 streamed
+WallGrassProductionV1 MeshParts with no script errors.
+
+Performance: Sampled in Play mode from the close front-cliff view
+`(120, 420, -560)` looking at `(60, 410, -487)`: `SceneDrawcallCount = 38`,
+`SceneTriangleCount = 3,893,139`, `ShadowsDrawcallCount = 458`,
+`ShadowsTriangleCount = 479,238`, `FrameTime ≈ 65.20 ms` (Studio desktop).
+
+Limitations: Triangle count in full-cliff close views is now well above the
+~1,000,000 low-end mobile target. Layer2 is isolated in `*_Layer2` folders so
+it can be distance-culled, LOD-swapped, or toggled per graphics quality later.
+
+Next: Review the 2x density visually in gameplay; if keeping 2x density,
+introduce a cheaper distant LOD mesh or graphics-quality gating for mobile.
