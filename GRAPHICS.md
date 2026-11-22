@@ -205,18 +205,18 @@ Current production elements:
 - The cottage is now axis-aligned with the fissure instead of yawed 31.477
   degrees. Its stone foundation is embedded 0.5 stud into the Terrain surface,
   eliminating the visible floating gap.
-- `InclinedLadder_v3` is approximately 21 studs wide and 590.25 studs long. It
-  runs from the lower meadow at `(16.97, 3.2, -589)` to the upper meadow at
-  `(16.97, 503, -275)` at 57.86 degrees above horizontal, almost exactly twice
-  the former 28.89-degree slope. It has two rails, 97 rungs, and three
-  overlapping invisible TrussPart climb surfaces spanning the full route. The
-  former short `InclinedLadder_v2` is archived under
-  `BeforeFullHeightLadder_2026_11_22`; the original 1,052-stud ladder remains
-  archived under `BeforeShortChasmComposition_2026_11_21`.
-- The visible fissure is approximately 288 studs long and now has a reference-
-  matched tapered plan shape instead of a constant-width rectangular slot.
-  `Geometry.TaperedFissure_v1` widens from approximately 24 studs beside the
-  house/ladder landing to 80 studs at the exposed front edge. The house/garden
+- `InclinedLadder_v4` is approximately 21 studs wide and 551.87 studs long. It
+  runs from the lower meadow at `(16.97, 3.2, -509)` to the upper meadow at
+  `(16.97, 503, -275)` at 64.91 degrees above horizontal. It has two rails, 91
+  rungs, and three overlapping invisible TrussPart climb surfaces spanning the
+  full route. The previous `InclinedLadder_v3` and its associated composition
+  are archived under `BeforeCompactFissure_2026_11_22`.
+- The visible fissure is approximately 208 studs long and has a compact tapered
+  plan shape instead of a constant-width rectangular slot.
+  `Geometry.TaperedFissure_v2` widens from approximately 22 studs beside the
+  house/ladder landing to 55 studs at the exposed front edge. The entire front
+  cliff edge now begins at Z `-487`, so the shorter opening remains exposed to
+  the lower meadow without creating a roof above the ladder. The house/garden
   group remains near Z `-170`, roughly 25 studs behind the fissure end.
 - The upper meadow surface is now approximately Y `503` while the lower meadow
   remains approximately Y `2`. The active cliff cores are 500 studs tall with
@@ -289,9 +289,9 @@ audio, and reference-matched cinematography remain.
    video cameras.
 4. Polish the Blender cottage roof intersections and create final plaster, tile,
    glass, stone, and garden PBR treatment.
-5. Polish the full-height ladder's visible landings and the new 80-to-24-stud
+5. Polish the full-height ladder's visible landings and the new 55-to-22-stud
    tapered fissure edges while preserving the verified R15 traversal.
-6. Replace the 102-Part ladder prototype with an optimized authored model once
+6. Replace the 96-Part ladder prototype with an optimized authored model once
    its final composition is approved.
 7. Add roots, erosion, decals, soft low clouds, a distant meadow horizon, and
    moving cloud-shadow treatment.
@@ -398,16 +398,17 @@ audio, and reference-matched cinematography remain.
   bounding-box bottom is Y `499.232`, so its foundation is embedded rather than
   floating. The then-active `InclinedLadder_v2` and the house spawn were
   translated with the upper composition rather than rebuilt independently.
-- The active `InclinedLadder_v3` uses exact endpoints `(16.9704, 3.2, -589)`
-  and `(16.9704, 503, -275)`, a 590.25-stud route at 57.86 degrees. Its climb
-  collision is split into three overlapping 16.5-stud-wide TrussParts because
-  a single TrussPart was clamped to 512 studs and left both ends uncovered.
-- `Geometry.TaperedFissure_v1` uses two vertical WedgeParts to turn the former
-  constant 26-stud fissure into a symmetric plan-view taper from 80 studs at
-  Z `-567` to 24 studs at Z `-279`. `LeftCliffCore` and `RightCliffCore` retain
-  their outer bounds but were narrowed to 660 studs each; the closure, end wall,
-  and lower chasm floor were widened to 80 studs. Upper Terrain was carved only
-  inside the tapered opening at 4-stud voxel resolution.
+- The active `InclinedLadder_v4` uses exact endpoints `(16.9704, 3.2, -509)`
+  and `(16.9704, 503, -275)`, a 551.87-stud route at 64.91 degrees. Its climb
+  collision is split into three overlapping centered TrussParts; a single
+  full-length TrussPart would exceed Roblox's 512-stud size limit.
+- `Geometry.TaperedFissure_v2` uses two vertical WedgeParts to create a
+  symmetric plan-view taper from 55 studs at Z `-487` to 22 studs at Z `-279`.
+  `LeftCliffCore` and `RightCliffCore` retain their outer X and rear Z bounds,
+  but their front edge moved 80 studs back and their depth is now 540 studs.
+  The upper Terrain strip over the former front extension was removed, then the
+  narrower taper was rebuilt at 4-stud voxel resolution with its surrounding
+  Grass surface matched to Y `503.016`.
 - The detached old Terrain layer occupied approximately X `-720..740`,
   Y `1004..1012`, and Z `-580..2120`. The cleanup archived cell region
   `(-180,248,-145)` through `(185,256,530)` as
@@ -1249,3 +1250,40 @@ its cliff-edge materials and vegetation still need final authored art.
 
 Next: Keep the approved taper and verified climb fixed while replacing only the
 visible core surfaces with the approved grass/cliff art treatment.
+
+### 2026-11-22 — Compact fissure and steeper ladder
+
+Scope: `Workspace.PinkHouseMap.Geometry` front cliff cores, upper front-edge
+Terrain, `TaperedFissure_v2`, `InclinedLadder_v4`, and their recovery archive.
+
+Implementation: Archived the prior geometry, ladder, and affected Terrain under
+`ServerStorage.MapArchives.BeforeCompactFissure_2026_11_22`. Moved the complete
+front cliff edge from Z `-567` to `-487` while retaining its outer X and rear Z
+bounds, reducing core depth from 620 to 540 studs. Rebuilt the opening as a
+208-stud taper from 55 studs at the exposed front to 22 studs at Z `-279` and
+removed only the obsolete upper Terrain strip in front. Replaced the ladder
+with `InclinedLadder_v4`, running from `(16.9704, 3.2, -509)` to
+`(16.9704, 503, -275)` over 551.87 studs at 64.91 degrees, with two rails, 91
+rungs, and three overlapping invisible climb surfaces.
+
+Verification: Horizontal Edit raycasts measured opening widths of `53.89`,
+`47.54`, `38.02`, `28.50`, and `22.95` studs while approaching the house.
+Terrain-only rays hit the lower meadow at Y `2` through every sample and the
+surrounding upper Grass at Y `503.016`. The former front extension at Z `-530`
+and `-500` now raycasts directly to the lower meadow. In Play, the R15 character
+entered `Climbing` at the base and reached `(16.97, 48.92, -491.53)` after five
+seconds; the upper-section test exited onto Grass at
+`(16.94, 506.01, -263.29)` in `Running` state with full health. Captured
+`CompactFissure_TopOblique` and `CompactFissure_Overview`; saved to Roblox as
+version 63.
+
+Performance: Not measured; the active ladder decreased from 102 to 96
+BaseParts, the taper still uses two WedgeParts, and no runtime scripts or update
+loops were added.
+
+Limitations: The composition and traversal are stable, but the cliff edges are
+still Part/WedgePart cores and need final authored grass, soil, erosion, and
+landing art.
+
+Next: Preserve the approved 55-to-22-stud taper and verified ladder route while
+polishing only the visible surfaces and landings.
