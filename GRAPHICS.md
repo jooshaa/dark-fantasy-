@@ -1542,3 +1542,36 @@ it can be distance-culled, LOD-swapped, or toggled per graphics quality later.
 
 Next: Review the 2x density visually in gameplay; if keeping 2x density,
 introduce a cheaper distant LOD mesh or graphics-quality gating for mobile.
+
+### 2026-11-23 — Sloped earth/grass cliff bank behind ladder
+
+Scope: `Workspace.PinkHouseMap.Geometry.LadderEarthSlope_v1` (30 anchored Parts
+backing `InclinedLadder_v4`).
+
+Implementation: Inspected the user's reference video (`frame_09.jpg`), which
+shows the inclined ladder resting on a continuous sloped earth-and-grass bank
+inside the fissure rather than hanging over an empty drop-off. Built
+`LadderEarthSlope_v1` aligned to the exact ladder slope (`pBottom = (16.97, 6.0,
+-507.7)` to `pTop = (16.97, 499.0, -276.9)`, `Up = (0, 0.906, 0.424)`,
+`backDir = (0, -0.424, 0.906)`): 14 tapered `LeafyGrass` slope segments
+matching the 55-to-22-stud fissure width, solid `Rock` under-fill pillars down
+to `Y = 4` to eliminate any hollow void underneath, a `20.5`-stud-wide `Ground`
+dirt bed seated `1.35` studs behind the ladder center so the rails and rungs
+rest directly on earth without obstructing `ClimbSurface_01..03`, flanking
+`Grass` shoulders, and a `LowerRampBase` wedge meeting the lower meadow.
+
+Verification: Three Edit captures (`LadderSlope_RefTopView`,
+`LadderSlope_BottomUpView`, `LadderSlope_ClimbCloseup`) confirmed the ladder
+lies cleanly on the earth/grass slope from top, bottom, and close climbing
+views, with zero hollow void behind the rungs and unobstructed front climb
+clearance.
+
+Performance: Added 30 simple anchored Parts (`CanCollide = true`); negligible
+triangle/draw-call overhead (Play-mode re-profile pending).
+
+Limitations: Slope shoulders use Roblox `LeafyGrass`/`Ground` materials rather
+than custom Blender terrain mesh or 3D grass blades along the ramp sides; a
+full bottom-to-top R15 climb test should confirm zero snagging on the dirt bed.
+
+Next: Playtest climbing `InclinedLadder_v4` over `LadderEarthSlope_v1` and
+optionally add 3D grass/rock breakup along the sloped shoulders.
