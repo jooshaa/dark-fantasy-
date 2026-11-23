@@ -1674,3 +1674,39 @@ will require a lower-poly authored distant LOD1 panel mesh for ranges beyond
 
 Next: Review the seamless cliff horizon in Play mode; later author a low-poly
 LOD1 wall-grass panel in Blender for mobile optimization.
+
+### 2026-11-23 — Reference-matched sunlit cliff lighting, meadow-green wall grass, and binary Layer2 LOD
+
+Scope: `Lighting` (`GeographicLatitude`, `ClockTime`),
+`Workspace.PinkHouseMap.WallGrassProductionV1`, `SlopeGrass3D`, cliff backing
+tint, and `WallGrassWind` (`src/client/WallGrassWind.client.luau` +
+`StarterPlayerScripts.WallGrassWind`).
+
+Implementation: Rotated the sun from behind the cliff (`GeoLat = 38`,
+`SunDir.Z = +0.25`) to front-left high sky (`GeographicLatitude = -24`,
+`ClockTime = 14.25`, `SunDir = (-0.38, 0.56, -0.74)`) so sunlight directly
+illuminates the front cliff grass and casts a dramatic shadow inside the
+fissure matching the reference video. Brightened all 1,196 `WallGrassProductionV1`
+panels and 56 `SlopeGrass3D` panels to four vibrant meadow-green tints matching
+Terrain Grass (`RGB(74,114,52)`, `(80,122,56)`, `(86,128,60)`, `(70,108,48)`),
+raised cliff backing `LeafyGrass` to `RGB(48,74,34)`, and lengthened blade
+projection depth (`Layer1` `Size.Z = 4.2`, `Layer2` `Size.Z = 5.0`) while
+keeping panel roots anchored inside the cliff wall. Replaced fractional
+`LocalTransparencyModifier` fading in `WallGrassWind.client.luau` with a clean
+opaque/hidden binary LOD cutoff at `500` studs to eliminate backlit
+semi-transparent glints against the sky.
+
+Verification: Edit captures (`MeadowGrass_TopHouseView`,
+`MeadowGrass_BottomUpView`) confirmed the front cliff now matches the vibrant
+sunlit meadow green of the top Terrain Grass with longer bristling silhouette
+blades, deep fissure shadow, and zero backlit sparkle or streaming cutoff.
+
+Performance: No geometry or draw calls added; `WallGrassWind` keeps the same
+96-panel wind cap and 500-stud Layer2 distance cull.
+
+Limitations: A narrow mossy-earth lip from the Terrain voxel edge remains
+visible at the top rim; a dedicated draped lip-fringe pass or custom Blender
+long-blade grass v2 can further soften that transition.
+
+Next: Playtest the sunlit front cliff and fissure climb, then tackle distant
+horizon/clouds or cottage PBR polish.

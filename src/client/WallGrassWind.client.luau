@@ -16,11 +16,10 @@ local ACTIVE_REFRESH_SECONDS = 0.4
 local UPDATE_SECONDS = 1 / 30
 local BASE_SWAY_RADIANS = math.rad(0.55)
 
--- Smooth distance LOD for Layer2 density panels (*_Layer2 folders):
--- Close/mid range keeps full 2x density; far range fades Layer2 seamlessly
--- into Layer1 (which stays loaded across the cliff) to save triangles with zero pop.
-local LAYER2_FADE_START = 320
-local LAYER2_FADE_END = 420
+-- Binary distance LOD for Layer2 density panels (*_Layer2 folders):
+-- Uses strictly opaque (0) or hidden (1) to avoid semi-transparent sorting/backlight
+-- glints against the sky while keeping Layer1 visible across the full cliff.
+local LAYER2_VISIBLE_RANGE = 500
 
 type PanelRecord = {
 	part: MeshPart,
@@ -75,14 +74,7 @@ local function refreshActivePanels()
 			local distance = (base.Position - cameraPosition).Magnitude
 			local parent = part.Parent
 			if parent ~= nil and string.sub(parent.Name, -7) == "_Layer2" then
-				if distance <= LAYER2_FADE_START then
-					part.LocalTransparencyModifier = 0
-				elseif distance >= LAYER2_FADE_END then
-					part.LocalTransparencyModifier = 1
-				else
-					part.LocalTransparencyModifier = (distance - LAYER2_FADE_START)
-						/ (LAYER2_FADE_END - LAYER2_FADE_START)
-				end
+				part.LocalTransparencyModifier = if distance <= LAYER2_VISIBLE_RANGE then 0 else 1
 			end
 
 			if distance <= ACTIVE_RANGE then
