@@ -1639,3 +1639,38 @@ Limitations: Full manual R15 bottom-to-top climb test over the slightly steeper
 
 Next: Playtest climbing from bottom to top and confirm smooth entry/exit at both
 the lower meadow and the top plateau beside the cottage.
+
+### 2026-11-23 — Eliminate cliff streaming cutoff and add Layer2 smooth distance LOD
+
+Scope: `Workspace` streaming properties, cliff backing tint,
+`StarterPlayer.StarterPlayerScripts.WallGrassWind`, and durable client source
+`src/client/WallGrassWind.client.luau`.
+
+Implementation: Raised `Workspace.StreamingMinRadius` from `128` to `256`,
+`Workspace.StreamingTargetRadius` from `512` to `1024`, and switched
+`Workspace.StreamOutBehavior` from `Opportunistic` to `LowMemory` so the full
+monumental front cliff stays loaded without an abrupt rectangular streaming
+cutoff on desktop/mid-range devices while still streaming out safely under low
+memory. Fine-tuned cliff backing `LeafyGrass` tint to `RGB(42, 62, 30)` to
+better match average lit grass brightness if extreme corners ever stream out.
+Added smooth client-side distance LOD for `*_Layer2` panels inside
+`WallGrassWind.client.luau` (`LAYER2_FADE_START = 320`, `LAYER2_FADE_END = 420`
+using `LocalTransparencyModifier`), keeping 2x density up close while
+dissolving far Layer2 panels into Layer1 with zero pop-in.
+
+Verification: `rojo build default.project.json` passed cleanly. Play-mode
+client probe from the bottom-up cliff view `(25, 45, -535)` looking toward
+`(120, 320, -487)` confirmed `598 / 598` Layer1 panels streamed (eliminating
+the bald cutoff seam) and Layer2 LOD active (`visible = 208`, `fading = 114`,
+`hidden = 276`).
+
+Performance: Play-mode bottom-up wide view measured `SceneDrawcallCount = 89`,
+`SceneTriangleCount = 4,898,442`, `FrameTime ≈ 65.89 ms` (Studio desktop).
+
+Limitations: Full 1,024-stud Layer1 visibility increases worst-case visible
+triangles to ~4.9M in wide cliff views. Reaching a ~1M low-end mobile target
+will require a lower-poly authored distant LOD1 panel mesh for ranges beyond
+~350–400 studs.
+
+Next: Review the seamless cliff horizon in Play mode; later author a low-poly
+LOD1 wall-grass panel in Blender for mobile optimization.
