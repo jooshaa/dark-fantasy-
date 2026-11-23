@@ -1602,3 +1602,40 @@ cores) still rely on the `LeafyGrass` backing without 3D wall-grass panels.
 Next: Review in Play mode and decide on the next vertical-slice priority
 (distant horizon/clouds, cottage PBR polish, or mobile LOD optimization for the
 2x wall grass).
+
+### 2026-11-23 — Pull ladder and seamless grassy slope strictly inside fissure
+
+Scope: `Workspace.PinkHouseMap.InclinedLadder_v4`,
+`Workspace.PinkHouseMap.Geometry.LadderEarthSlope_v1`, and
+`Workspace.PinkHouseMap.Geometry.ChasmFloor`.
+
+Implementation: Moved the bottom of `InclinedLadder_v4` back from
+`Z = -506.46` to `Z = -486.0` (`pBottom = (16.97, 6.0, -486.0)` to
+`pTop = (16.97, 499.0, -277.5)`, length `535.3` studs, 90 rungs, 3 overlapping
+`TrussPart` climb surfaces) so the entire ladder and slope stay strictly inside
+the fissure behind the front cliff plane (`Z = -487.0`). Replaced the stepped
+slope segments and protruding `LowerRampBase` with one continuous `62`-stud-wide
+`LeafyGrass` slope (`GrassSlopeContinuous`) whose left/right edges bury cleanly
+into the tapered fissure walls with zero side gaps, backed by solid
+`SlopeUnderFill` blocks, a central `19.6`-stud worn `Ground` dirt trail
+(`LadderDirtTrail`) directly beneath the ladder, soft `TrailGrassEdge` blends,
+and 56 instanced 3D grass MeshParts (`SlopeGrass3D`, reusing existing
+`WallGrassProductionV1` MeshIds) along the grassy flanks on both sides of the
+worn dirt trail. Lowered `ChasmFloor` to `Y = -1.0` so the lower meadow grass
+meets the foot of the ladder without an exposed dark stone step.
+
+Verification: Four Edit captures (`LadderInside_BottomUp`,
+`LadderInside_TopRef`, `LadderInside_TrailCloseup`,
+`LadderInside_BottomFootCheck2`) confirmed nothing protrudes past the front
+cliff face, left/right fissure gaps and stepped ledges are gone, the lower
+meadow meets the ladder base cleanly, and 3D grass flanks the worn dirt trail
+under the rungs.
+
+Performance: Added 56 instanced MeshParts reusing the 4 existing wall-grass
+MeshIds plus 13 structural Parts (Play-mode re-profile pending).
+
+Limitations: Full manual R15 bottom-to-top climb test over the slightly steeper
+(~66.8°) inside-fissure ladder is still pending.
+
+Next: Playtest climbing from bottom to top and confirm smooth entry/exit at both
+the lower meadow and the top plateau beside the cottage.
