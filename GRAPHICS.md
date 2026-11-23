@@ -1575,3 +1575,30 @@ full bottom-to-top R15 climb test should confirm zero snagging on the dirt bed.
 
 Next: Playtest climbing `InclinedLadder_v4` over `LadderEarthSlope_v1` and
 optionally add 3D grass/rock breakup along the sloped shoulders.
+
+### 2026-11-23 — Replace bright tiled cliff backing with dark shadow-moss LeafyGrass
+
+Scope: `Workspace.PinkHouseMap.Geometry` cliff backing cores (`LeftCliffCore`,
+`RightCliffCore`, `LeftTaperWall`, `RightTaperWall`, `RearPlateauCore`,
+`ChasmEndWall`, `ChasmClosureCore_v1`).
+
+Implementation: Cleared the legacy `pinkhouse_overgrown_cliff` / `cliff1` /
+`cliff2` MaterialVariants and bright lime tint `RGB(165, 192, 132)` that were
+showing through the 3D wall grass as repeating horizontal bright stripes.
+Replaced all 7 cliff backing parts with matte `Enum.Material.LeafyGrass` tinted
+to deep root-shadow green `RGB(36, 52, 26)`.
+
+Verification: Close-up (`CliffBacking_Closeup_After`) and wide front-cliff
+(`CliffBacking_FrontWide_After`) Edit captures confirmed the repeating bright
+stripes are completely gone; the monolith now reads as a cohesive, velvety
+overgrown cliff face closely matching the reference video.
+
+Performance: Material/color change only on 7 existing Parts; zero added
+geometry or draw calls.
+
+Limitations: Outer side and rear faces (`RearPlateauCore` / side edges of cliff
+cores) still rely on the `LeafyGrass` backing without 3D wall-grass panels.
+
+Next: Review in Play mode and decide on the next vertical-slice priority
+(distant horizon/clouds, cottage PBR polish, or mobile LOD optimization for the
+2x wall grass).
