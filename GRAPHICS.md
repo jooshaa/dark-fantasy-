@@ -1743,3 +1743,30 @@ Limitations: Competitor CCU bands are public community-tracker ranges
 Next: Keep primary execution focus on `Pink House / Dark Fantasy Keeper`
 (82/100 benchmark), optionally integrating the `Don't Look Behind` monster
 mechanic into the fissure/abyss run.
+
+### 2026-11-24 — 10-idea Deep-Dive Playbook PDF (Bull/Bear, Redesign & Small-Team CCU Tiers)
+
+Scope: `output/pdf/Roblox_10_Ideas_Deep_Dive_Playbook_RU.pdf`,
+`tmp/pdfs/build_deep_dive_playbook.py`, and `research/IDEA_VALIDATOR_ROUTER.md`.
+
+Implementation: Created a second, constructive 12-page deep-dive playbook
+giving every one of the 10 proposed ideas its own full dedicated page with:
+Bull Case, Bear Case (including live 2025–2026 competitor checks such as
+`Restaurant Tycoon 3`, `Voxel Destruction Physics`, `Abyss`, and DevEx
+`$0.0038/R$` small-team revenue benchmarks for 500 / 1,000 / 3,000 CCU),
+5-loop 2026–2027 redesign blueprint, fair monetization plan, 2-week MVP scope,
+and a Mini-Game Hub timing guide + 3 strategic team paths. Added the playbook
+to `research/IDEA_VALIDATOR_ROUTER.md`.
+
+Verification: Built `output/pdf/Roblox_10_Ideas_Deep_Dive_Playbook_RU.pdf`
+cleanly via ReportLab and visually verified page layout, Cyrillic rendering,
+and two-column Bull/Bear boxes.
+
+Performance: Documentation/research only; no runtime Roblox scene changes.
+
+Limitations: CCU-to-revenue bands are public industry ranges and depend on
+actual D1/D7 retention and monetization execution.
+
+Next: Choose between Path A (`Pink House` + `Don't Look Behind` mechanic),
+Path B (`Class Prank Chaos` or `Build & Break Siege` 2–3 week sprint), or
+Path C (`Deep Ocean` extraction / `Restaurant Chaos`).
