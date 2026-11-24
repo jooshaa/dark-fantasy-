@@ -59,3 +59,13 @@ Commit and push changes with clear, descriptive commit messages.
 - `LightingStyle = Realistic` may require a manual Studio Properties change if
   MCP lacks the necessary capability.
 
+## Game Idea & Trend Evaluation Router
+
+Before approving, prototyping, or evaluating any new Roblox game idea, mechanic,
+or pivot, read `research/IDEA_VALIDATOR_ROUTER.md` first. It provides the
+mandatory 5 red-flag gates, the 100-point scoring rubric, and exact file/page
+pointers to the project's research PDFs
+(`output/pdf/Roblox_Trends_2020_2025_Deep_Research_RU.pdf` and
+`output/pdf/Roblox_10_Game_Ideas_Evaluation_RU.pdf`) without overloading agent
+context.
+

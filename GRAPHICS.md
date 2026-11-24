@@ -1710,3 +1710,36 @@ long-blade grass v2 can further soften that transition.
 
 Next: Playtest the sunlit front cliff and fissure climb, then tackle distant
 horizon/clouds or cottage PBR polish.
+
+### 2026-11-24 — 10-idea Roblox audit PDF & AI agent validator router
+
+Scope: `research/IDEA_VALIDATOR_ROUTER.md`,
+`output/pdf/Roblox_10_Game_Ideas_Evaluation_RU.pdf`,
+`tmp/pdfs/build_ideas_evaluation.py`, `research/inputs/` archived concept PDFs,
+`AGENTS.md`, and `README.md`.
+
+Implementation: Archived both submitted concept decks into `research/inputs/`,
+evaluated all 10 proposed Roblox concepts plus the Mini-Game Hub wrapper
+against `output/pdf/Roblox_Trends_2020_2025_Deep_Research_RU.pdf` and live
+2025–2026 Roblox competitor CCU benchmarks (`Epic Minigames`, `Color Block`,
+`Build A Boat`, `Tower Defense Simulator`, `Restaurant Tycoon 2`,
+`Work at a Pizza Place`, `Theme Park Tycoon 2`, `Taxi Boss`, `Abyss`, `Fisch`,
+`99 Nights in the Forest`). Generated a 9-page Russian PDF audit report with a
+100-point rubric, bar chart, per-game scorecards, moderation red-flag checks,
+and pivot recipes. Created `research/IDEA_VALIDATOR_ROUTER.md` (linked in
+`AGENTS.md` and `README.md`) so any future AI agent validates game ideas via a
+lightweight router pointing to the knowledge-base PDFs without blowing up
+context.
+
+Verification: Built `output/pdf/Roblox_10_Game_Ideas_Evaluation_RU.pdf` cleanly
+via ReportLab (138 KB) and visually inspected rendered pages for Cyrillic
+typography, chart alignment, and table layout.
+
+Performance: Documentation/research only; no runtime Roblox scene changes.
+
+Limitations: Competitor CCU bands are public community-tracker ranges
+(Rolimon's/RoMonitor) rather than private Creator Analytics cohorts.
+
+Next: Keep primary execution focus on `Pink House / Dark Fantasy Keeper`
+(82/100 benchmark), optionally integrating the `Don't Look Behind` monster
+mechanic into the fissure/abyss run.

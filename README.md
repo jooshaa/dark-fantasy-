@@ -10,6 +10,7 @@ Cinematic realistic dark-fantasy horror experience in Roblox (`dark fantasy`, `p
 - `src/shared/` → `ReplicatedStorage.Shared` (shared modules, configs, remotes)
 - `blender/`, `exports/`, `textures/`, `references/` — Blender 3D assets, GLB exports, textures, and visual references.
 - `AGENTS.md` — mandatory workflow, collaboration, and logging rules for all contributors and AI agents.
+- `research/IDEA_VALIDATOR_ROUTER.md` — lightweight AI agent router & 100-point scoring rule pointing to the Roblox trends deep research (`output/pdf/Roblox_Trends_2020_2025_Deep_Research_RU.pdf`) and 10-idea evaluation report (`output/pdf/Roblox_10_Game_Ideas_Evaluation_RU.pdf`).
 - `GRAPHICS.md` — live source of truth for visual direction, current state, implementation notes, audit log, and next priorities.
 
 ## Quick Start for Collaborators
