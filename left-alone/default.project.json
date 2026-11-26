@@ -1,0 +1,45 @@
+{
+  "name": "left-alone-traps",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "$ignoreUnknownInstances": true,
+      "Shared": {
+        "$path": "src/shared"
+      },
+      "Remotes": {
+        "$className": "Folder",
+        "$ignoreUnknownInstances": true,
+        "RoundStateChanged": {
+          "$className": "RemoteEvent"
+        },
+        "VoteEntryPoint": {
+          "$className": "RemoteEvent"
+        },
+        "PlaceTrap": {
+          "$className": "RemoteEvent"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "$ignoreUnknownInstances": true,
+      "Core": {
+        "$path": "src/server/Core"
+      },
+      "Gameplay": {
+        "$path": "src/server/Gameplay"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$ignoreUnknownInstances": true,
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "$ignoreUnknownInstances": true,
+        "$path": "src/client"
+      }
+    }
+  }
+}
